@@ -42,7 +42,34 @@ userRouter.post('/', (req,res) => {
         res.status(500).json({error : 'error adding new user'});
     })
 })
-
+/*****************************************************************************************/
+userRouter.delete('/:id', (req,res) => {
+    const userID = req.params.id;
+    users.remove(userID)
+    .then( delCount => {
+        if (delCount > 0) {
+            res.status(204).json({message : `The user with id #: ${userID} has been deleted`})
+        } else {
+            res.status(404).json({message : `the user with id ${userID} could not be found`})
+        }
+    })
+    .catch( err => {
+        res.status(500).json({message : `error deleting user with id: ${userID}`})
+    })
+})
+/*****************************************************************************************/
+userRouter.put('/:id', (req,res) => {
+    const userID = req.params.id;
+    const changes = req.body;
+    users.update(userID, changes)
+    .then( updateCount => {
+        if (updateCount > 0) {
+            res.status(200).send(`the user with id #: ${userID} has been updated`);
+        } else {
+            res.status(404).json({ error : `the user with id ${userID} could not be updated`});
+        }
+    })
+})
 
 
 
