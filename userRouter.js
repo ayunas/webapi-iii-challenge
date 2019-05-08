@@ -31,7 +31,17 @@ userRouter.get('/:id', (req,res) => {
         res.status(500).json({error : err});
     })
 })
-
+/*****************************************************************************************/
+userRouter.post('/', (req,res) => {
+    console.log(req.body);
+    users.insert(req.body)
+    .then( newUser => {
+        res.status(201).json(newUser);
+    })
+    .catch( err => {
+        res.status(500).json({error : 'error adding new user'});
+    })
+})
 
 
 
