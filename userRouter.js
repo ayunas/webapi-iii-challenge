@@ -31,6 +31,7 @@ userRouter.get('/:id', (req,res) => {
         res.status(500).json({error : err});
     })
 })
+
 /*****************************************************************************************/
 userRouter.post('/', (req,res) => {
     console.log(req.body);
@@ -71,7 +72,22 @@ userRouter.put('/:id', (req,res) => {
     })
 })
 /*****************************************************************************************/
-
+userRouter.get('/users/:userID', (req,res) => {
+    console.log(req.params);
+    // res.status(200).json({message : req.params.userID})    
+    const userID = req.params.userID;
+    users.getUserPosts(userID)
+    .then( userPosts => {
+        if (userPosts.length > 0) {
+            res.status(200).json({"User's Posts" : userPosts});
+        } else {
+            res.status(404).json({message : `That user currently doesn't have any posts`})
+        }
+    })
+    .catch( err => {
+        res.status(500).json(err);
+    })
+})
 
 
 
