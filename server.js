@@ -6,7 +6,6 @@ const postRouter = require('./postRouter');
 const bodyParser = express.json();
 const server = express();
 
-
 server.use(bodyParser);
 // server.use(uppercase);
 
