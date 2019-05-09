@@ -59,7 +59,24 @@ postRouter.delete('/:id', (req,res) => {
     })
 })
 /*****************************************************************************************/
+postRouter.put('/:id', (req,res) => {
+    const postID = req.params.id;
+    const changes = req.body;
 
+    posts.update(postID,changes)
+    .then( updateCount => {
+        if (updateCount > 0) {
+            res.status(200).json({message : `${updateCount} post was updated with id #: ${postID}`});
+        } else {
+            res.status(404).json({error : `the post with id #: ${postID} couldn't be updated`});
+        }
+    })
+    .catch( err => {
+        console.log('error', err.message);
+        res.status(500).json({error : 'a server error occurred'});
+    })
+})
+/*****************************************************************************************/
 
 
 
