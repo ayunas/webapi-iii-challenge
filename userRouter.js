@@ -4,6 +4,8 @@ const users = require('./data/helpers/userDb');
 
 const userRouter = express.Router();
 
+const uppercase = require('./middleware');
+
 /*****************************************************************************************/
 userRouter.get('/', (req,res) => {
     users.get()
@@ -33,7 +35,7 @@ userRouter.get('/:id', (req,res) => {
 })
 
 /*****************************************************************************************/
-userRouter.post('/', (req,res) => {
+userRouter.post('/', uppercase, (req,res) => {
     console.log(req.body);
     users.insert(req.body)
     .then( newUser => {
@@ -72,14 +74,14 @@ userRouter.put('/:id', (req,res) => {
     })
 })
 /*****************************************************************************************/
-userRouter.get('/users/:userID', (req,res) => {
+userRouter.get('/:userID/posts', (req,res) => {
     console.log(req.params);
-    // res.status(200).json({message : req.params.userID})    
     const userID = req.params.userID;
     users.getUserPosts(userID)
     .then( userPosts => {
         if (userPosts.length > 0) {
-            res.status(200).json({"User's Posts" : userPosts});
+            const userKey = `User # ${userID}'s Posts`;
+            res.status(200).json({ userKey : userPosts});
         } else {
             res.status(404).json({message : `That user currently doesn't have any posts`})
         }
@@ -88,6 +90,7 @@ userRouter.get('/users/:userID', (req,res) => {
         res.status(500).json(err);
     })
 })
+/*****************************************************************************************/
 
 
 
