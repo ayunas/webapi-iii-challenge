@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import AddUser from './AddUser';
+
 
 export default class Users extends Component {
 
@@ -8,7 +10,8 @@ export default class Users extends Component {
 
       this.state = {
           users : [],
-          showUsers : false
+          showUsers : false,
+          add : false
       }
   }
 
@@ -25,11 +28,28 @@ export default class Users extends Component {
       })
   }  
 
+  addUser = () => {
+
+    this.setState({
+        add : !this.state.add
+    })
+
+
+
+
+  }
+
   render() {
     return (
       <div>
-        <button onClick={this.getUsers}>Show Users</button>
-        {this.state.showUsers && this.state.users.map( user => <p>{user.name}</p>)}
+        {!this.state.showUsers ? <button onClick={this.getUsers}>Show Users</button> : 
+        <button onClick={this.getUsers}>Hide Users</button> }
+        {this.state.showUsers && this.state.users.map( user => <div>
+            <p>{user.name}</p>
+            <button>delete user</button>
+            </div>)}
+        <button onClick={this.addUser}>Add User</button>
+        {this.state.add && <AddUser/> }
       </div>
     )
   }
